@@ -1,0 +1,47 @@
+console.log("[Multi-AI Tab] ChatGPT content script loaded");
+
+// Receives args[0] as the user query
+(function () {
+    const query = typeof args !== "undefined" && args[0] ? args[0] : "";
+    if (!query) return;
+
+    function injectQuery() {
+        try {
+            const textarea = document.querySelector("textarea#prompt-textarea");
+            const sendBtn = document.querySelector('button[data-testid="send-button"]');
+            if (textarea && sendBtn) {
+                textarea.value = query;
+                textarea.dispatchEvent(new Event("input", { bubbles: true }));
+                setTimeout(() => {
+                    sendBtn.click();
+                }, 100);
+                console.log("[Multi-AI Tab] Query injected and send clicked.");
+                return true;
+            }
+        } catch (err) {
+            console.error("[Multi-AI Tab] ChatGPT injection error:", err);
+        }
+        return false;
+    }
+
+    // Use MutationObserver for dynamic loading
+    const observer = new MutationObserver(() => {
+        if (injectQuery()) {
+            observer.disconnect();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Fallback: poll for up to 12s
+    const pollInterval = setInterval(() => {
+        if (injectQuery()) {
+            clearInterval(pollInterval);
+            observer.disconnect();
+        }
+    }, 400);
+    setTimeout(() => {
+        clearInterval(pollInterval);
+        observer.disconnect();
+        console.warn("[Multi-AI Tab] Gave up injecting after 12s");
+    }, 12000);
+})();

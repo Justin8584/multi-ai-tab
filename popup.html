@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Multi-AI Tab</title>
+        <link rel="stylesheet" href="popup.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Multi-AI Tab</h1>
+
+            <div class="query-section">
+                <textarea id="query-input" placeholder="Enter your query here..."></textarea>
+            </div>
+
+            <div class="services-section">
+                <div class="section">
+                    <h2>Search Engines</h2>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="chk-google" value="google" />
+                            Google
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-duckduckgo" value="duckduckgo" />
+                            DuckDuckGo
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-bing" value="bing" />
+                            Bing
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>AI Platforms</h2>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="chk-chatgpt" value="chatgpt" />
+                            ChatGPT
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-claude" value="claude" />
+                            Claude
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-gemini" value="gemini" />
+                            Gemini
+                        </label>
+                        <label>
+                            <input type="checkbox" id="chk-deepseek" value="deepseek" />
+                            DeepSeek
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="submit-query">Search</button>
+            </div>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+**Project Name:** Multi-AI Tab Chrome Extension
+
+**Core Objective:**
+Develop a Chrome extension that allows the user to input a single query and select multiple search engines and AI chat platforms. Upon submission, the extension will open each selected service in a new, separate browser tab and automatically populate the query/prompt.
+
+**Key Constraints & Principles:**
+1.  **No Server-Side APIs:** The extension must interact *only* with the web UIs of the target search engines and AI platforms. Do not use or suggest any official or unofficial APIs for these services.
+2.  **No User Data Storage (for queries):** The user's query must be used ephemerally for the current operation only. Do not store the query itself using `chrome.storage`, `localStorage`, or any other persistent storage mechanism. (User *preferences* for which sites are selected *can* be stored using `chrome.storage.local` if implemented).
+3.  **New Tab for Each Service:** Each selected search engine and AI platform *must* be opened in its own new, separate browser tab. Do not attempt to embed results or use iframes within the popup or a single page.
+4.  **User's Existing Sessions:** The extension will rely on the user already being logged into the respective AI platforms in their browser. The extension will not handle login or authentication.
+
+**Technology Stack:**
+* **Platform:** Google Chrome Extension
+* **Manifest Version:** Manifest V3
+* **Languages:** HTML, CSS, JavaScript (use modern vanilla JavaScript primarily; avoid unnecessary libraries unless a strong justification is provided for a specific, small task).
+
+**Core Interaction Flow:**
+1.  User clicks the extension icon to open `popup.html`.
+2.  User types a query into a textarea.
+3.  User selects desired search engines and AI platforms via checkboxes.
+4.  User clicks a 'Submit' button.
+5.  `popup.js` retrieves the query and selected services.
+6.  For search engines: Construct a URL with the query (e.g., `https://www.google.com/search?q=ENCODED_QUERY`) and open it in a new tab using `chrome.tabs.create()`.
+7.  For AI platforms: Open the platform's base URL in a new tab using `chrome.tabs.create()`. Then, once the tab is loaded, inject a content script using `chrome.scripting.executeScript()`.
+8.  The content script for each AI platform will locate the prompt input field, populate it with the query, and (optionally) attempt to click the submit button for that platform.
+
+**Content Script Strategy:**
+* **Platform-Specific:** Each AI platform will require its own content script due to differing website structures.
+* **DOM Element Selectors:**
+    * Content scripts will need to identify HTML elements for prompt input fields and submit buttons. Acknowledge that specific selectors (IDs, class names, attributes) will need to be determined by manual inspection of each target website. Use placeholder selectors initially if actual ones are unknown.
+    * Provide example selector format: `textarea[data-id='prompt-input-field']` or `button[aria-label='Send message']`.
+* **Robustness to Page Load:** Content scripts *must* wait for the necessary DOM elements to be available before attempting to interact with them. Suggest using `DOMContentLoaded` for the script's execution start, or techniques like `MutationObserver`, or polling with `requestAnimationFrame`/`setTimeout` if elements are dynamically loaded after the initial DOM is ready. `chrome.scripting.executeScript` should ideally be called after `chrome.tabs.onUpdated` indicates `status === 'complete'` for the target tab.
+* **Error Handling:** Implement basic `try...catch` blocks in content scripts when accessing DOM elements to prevent the entire script from breaking if an element is not found. Log errors to the console.
+* **Argument Passing:** The user's query should be passed from `popup.js` to the content script via the `args` property in `chrome.scripting.executeScript()`.
+
+**Permissions Required in `manifest.json`:**
+* `"tabs"`: To create new tabs.
+* `"scripting"`: To inject content scripts.
+* `"host_permissions"`: Specific URLs for each AI platform (e.g., `"*://*.openai.com/*"`, `"*://claude.ai/*"`, etc.). Add these as they are implemented.
+* `"storage"`: (Optional) If implementing persistence for selected checkboxes.
+
+**Coding Style & Best Practices:**
+* Use clear, descriptive variable and function names.
+* Comment complex logic, especially around DOM manipulation and selectors in content scripts.
+* Organize code logically. For example, functions in `popup.js` related to specific AI platforms could be grouped or placed in helper functions.
+* Ensure all JavaScript code is compliant with Manifest V3 restrictions (e.g., no remote script execution beyond what's packaged, background service worker instead of persistent background page).
+* Focus on readability and maintainability, especially given that UI selectors for AI platforms may change and require updates.
+
+**Explicitly Avoid:**
+* Storing the user's query text.
+* Making any network requests from the extension other than opening tabs to the specified URLs.
+* Requesting overly broad permissions.
+* Using deprecated APIs or Manifest V2 features.

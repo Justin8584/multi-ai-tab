@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 380px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333;
+    background: #fff;
+}
+
+.container {
+    padding: 16px;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #1a73e8;
+}
+
+h2 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #5f6368;
+}
+
+.query-section {
+    margin-bottom: 16px;
+}
+
+#query-input {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#query-input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.section {
+    margin-bottom: 16px;
+}
+
+.checkbox-group {
+    display: grid;
+    gap: 8px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.actions {
+    margin-top: 16px;
+    text-align: right;
+}
+
+#submit-query {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#submit-query:hover {
+    background: #1557b0;
+}
+
+#submit-query:active {
+    background: #174ea6;
+}

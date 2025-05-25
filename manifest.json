@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Multi-AI Tab",
+  "version": "0.1.0",
+  "description": "Opens a query in multiple selected search engines and AI platforms, each in a new tab",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://chatgpt.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+} 
